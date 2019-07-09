@@ -24,6 +24,7 @@ def message_received(client, server, message):
         if len(message) > 200:
                 message = message[:200]+'..'
         print("Client(%s) said: %s" % (client['address'][0], message))
+        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " Client(%s) said: %s\n" % (client['address'][0], message))
         if message == "FRAME":
 #            print "FRAME Request"
             for i in range(w):
@@ -37,6 +38,7 @@ def message_received(client, server, message):
             for i in range(w):
                 for j in range(h):
                     frame[i][j] = 0
+            server.send_message_to_all(message)
         elif message.startswith('0:'):
 #            print "Draw Pixel Message"
             elements =  message.split(":")[1].split(",")
@@ -44,10 +46,7 @@ def message_received(client, server, message):
             y = int(elements[1])
             c = elements[2]
             frame[x][y] = c
-
-        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " Client(%s) said: %s\n" % (client['address'][0], message))
-        server.send_message_to_all(message)
-
+            server.send_message_to_all(message)
 
 PORT=9001
 server = WebsocketServer(PORT, host='0.0.0.0')
