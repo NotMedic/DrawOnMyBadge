@@ -183,7 +183,7 @@
     	return (componentToHex((result >> 8) & 0xff) + componentToHex(result & 0xff)).toUpperCase();
     }
 
-    var exampleSocket = new WebSocket("ws://52.43.252.153:9002/");
+    var exampleSocket = new WebSocket("ws://52.43.252.153:9001/");
 
     exampleSocket.onmessage = function(e) {
     	console.log(e.data);
@@ -198,6 +198,8 @@
             //console.log('X: ' + inXCoord + ' Y: ' + inYCoord + ' Color: ' + inColor);
 
             var rgb = rgb2to3(inColor);
+			
+			ctx.fillStyle = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',255)';
 
             //drawDot(ctx,inXCoord,inYCoord,1);
             ctx.fillRect(inXCoord,inYCoord,1,1)
