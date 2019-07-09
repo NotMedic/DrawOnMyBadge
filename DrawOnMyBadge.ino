@@ -1,3 +1,12 @@
+/*******************************************************************
+    Basic Websocket Example
+
+    Written by Brian Lough
+    https://www.youtube.com/channel/UCezJOfu7OtqGzd5xrP3q6WA
+
+    June 5th, 2018 - Added !rect, !line & !circle - Seon Rozenblum (Unexpected maker)
+ *******************************************************************/
+
 #include "secret.h"
 
 #include <Arduino.h>
@@ -45,6 +54,9 @@ char ssid[] = WIFI_NAME;       // your network SSID (name)
 char password[] = WIFI_PASS;  // your network key
 
 //WebSocketsServer webSocket = WebSocketsServer(81);
+
+unsigned long delayStart = 0;
+bool delayRunning = false;
 
 WebSocketsClient webSocket;
 
@@ -266,13 +278,19 @@ void setup() {
   display.setCursor(1, 1);
   display.println("WiFi: OK");
 
+  delayStart = millis();
+  delayRunning = true;
+
   //webSocket.begin();
   webSocket.begin("52.43.252.153", 9001, "/");
   webSocket.onEvent(webSocketEvent);
 }
 
 void loop() {
+   if (delayRunning && ((millis() - delayStart) >= 30000)) {
+    webSocket.sendPing();
+    Serial.println("Sent Ping");
+    delayStart = millis(); 
+  }
   webSocket.loop();
-
-
 }
