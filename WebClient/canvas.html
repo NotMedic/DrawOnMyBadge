@@ -2,7 +2,7 @@
 
 <head>
 
-
+	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script type="text/javascript" src="jqColorPicker.min.js"></script>
 	<script type="text/javascript">
@@ -61,6 +61,11 @@
     	message = 'CLEAR';
     	exampleSocket.send(message);
     }
+	
+	function getFrame(){
+	    message = "FRAME";
+		exampleSocket.send(message);
+	}
 
     // Keep track of the mouse button being pressed and draw a dot at current location
     function sketchpad_mouseDown() {
@@ -178,7 +183,7 @@
     	return (componentToHex((result >> 8) & 0xff) + componentToHex(result & 0xff)).toUpperCase();
     }
 
-    var exampleSocket = new WebSocket("ws://52.43.252.153:9001/");
+    var exampleSocket = new WebSocket("ws://52.43.252.153:9002/");
 
     exampleSocket.onmessage = function(e) {
     	console.log(e.data);
@@ -215,6 +220,7 @@
     	exampleSocket.send(message);
     }
 
+
     // Set-up the canvas and add our event handlers after the page has loaded
     function init() {
         // Get the specific canvas element from the HTML document
@@ -245,6 +251,7 @@
 	<canvas id="sketchpad" height="320" width="640" style="border:1px solid black;"></canvas>
 	<br>
 	<input type="submit" value="Clear Badge Drawing" onclick="clearCanvas(canvas,ctx);">
+	<input type="submit" value="Update Frame" onclick="getFrame();">
 	<input class="color no-alpha" value="rgb(162, 63, 3)" style="background-color: rgb(162, 63, 3); color: rgb(221, 221, 221);">
 
 </body>
