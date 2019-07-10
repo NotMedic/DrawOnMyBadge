@@ -28,10 +28,17 @@
     // Parameters are: A canvas context, the x position, the y position, the size of the dot
     function drawDot(ctx,x,y,size) {
         // Let's use black by setting RGB values to 0, and 255 alpha (completely opaque)
-        r=0; g=0; b=0; a=255;
+    //    r=0; g=0; b=0; a=255;
+		
+	//	console.log($(".color").val())
+		
+		// ctx.fillStyle = $(".color").val();
 
         // Select a fill style
-        ctx.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
+        //ctx.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
+		var convertedColor = convertColorToRGB565($(".color").val());
+		
+	//	console.log(convertedColor);
 
 
         x = Math.floor(x / scale);
@@ -48,7 +55,7 @@
        var message = '0:';
        message += x + ',';
        message += y + ',';
-       message += '0xA1E0';
+       message += '0x' + convertedColor;
 
        console.log(message);
 
@@ -199,7 +206,9 @@
 
             var rgb = rgb2to3(inColor);
 			
-			ctx.fillStyle = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',255)';
+			//console.log(rgb);
+			
+			ctx.fillStyle = 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')';
 
             //drawDot(ctx,inXCoord,inYCoord,1);
             ctx.fillRect(inXCoord,inYCoord,1,1)
@@ -244,17 +253,26 @@
             canvas.addEventListener('touchstart', sketchpad_touchStart, false);
             canvas.addEventListener('touchmove', sketchpad_touchMove, false);
         }
+		
+	$(".color").colorPicker({
+        forceAlpha: false
+    });
+	
+	getFrame();
+	
     }
+
 
 </script>
 </head>
 
 <body onload="init()">
-	<canvas id="sketchpad" height="320" width="640" style="border:1px solid black;"></canvas>
-	<br>
-	<input type="submit" value="Clear Badge Drawing" onclick="clearCanvas(canvas,ctx);">
+	<input type="submit" value="Clear Badge" onclick="clearCanvas(canvas,ctx);">
 	<input type="submit" value="Update Frame" onclick="getFrame();">
-	<input class="color no-alpha" value="rgb(162, 63, 3)" style="background-color: rgb(162, 63, 3); color: rgb(221, 221, 221);">
+	<input class="color no-alpha" value="rgb(0, 255, 0)" style="background-color: rgb(0, 255, 0); color: rgb(221, 221, 221);">
+	<br>
+	<canvas id="sketchpad" height="320" width="640" style="background-color: rgba(0, 0, 0, 255);"></canvas>
+
 
 </body>
 </html>
