@@ -62,11 +62,12 @@
             });
             $("#update-button").click(getFrame);
 
-            var blockSize = $(window).width() / 64;
+            var blockSize = ($(window).width() - 64) / 64;
             var canvasHeight = blockSize * 32;
-	    var scale = blockSize;
 
-            $("#sketchpad").css('width', $(window).width());
+		scale = blockSize;
+
+            $("#sketchpad").css('width', $(window).width() - 64);
             $("#sketchpad").css('height', canvasHeight);
         });
         </script>
