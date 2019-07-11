@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <!--meta name="viewport" content="width=650"-->
+        <meta name="viewport" content="">
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script type="text/javascript" src="js/jqColorPicker.min.js"></script>
@@ -64,8 +64,12 @@
 
             var blockSize = ($(window).width() - 64) / 64;
             var canvasHeight = blockSize * 32;
+            var viewportwidth = $(window).width() + 64
 
-		scale = blockSize;
+	    scale = blockSize;
+
+	    viewport = document.querySelector("meta[name=viewport]");
+            viewport.setAttribute('content', 'width=' + viewportwidth + ', user-scalable=0');
 
             $("#sketchpad").css('width', $(window).width() - 64);
             $("#sketchpad").css('height', canvasHeight);
