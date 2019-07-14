@@ -1,7 +1,10 @@
-#!/usr/bin/python
-
 from websocket_server import WebsocketServer
 from datetime import datetime
+import time
+
+w = 64
+h = 32
+frame = [[0 for x in range(h)] for y in range(w)]
 
 f= open("wslog.txt","a+", 1)
 
@@ -22,8 +25,28 @@ def message_received(client, server, message):
                 message = message[:200]+'..'
         print("Client(%s) said: %s" % (client['address'][0], message))
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " Client(%s) said: %s\n" % (client['address'][0], message))
-        server.send_message_to_all(message)
-
+        if message == "FRAME":
+#            print "FRAME Request"
+            for i in range(w):
+                for j in range(h):
+                    if (str(frame[i][j]) != "0") and (str(frame[i][j]) != "0x000"):
+                        message = "0:" + str(i) + "," + str(j)  + "," + str(frame[i][j])
+                        server.send_message(client,message)
+                        time.sleep(.01)
+        elif message == "CLEAR":
+#            print "CLEAR Request"
+            for i in range(w):
+                for j in range(h):
+                    frame[i][j] = 0
+            server.send_message_to_all(message)
+        elif message.startswith('0:'):
+#            print "Draw Pixel Message"
+            elements =  message.split(":")[1].split(",")
+            x = int(elements[0])
+            y = int(elements[1])
+            c = elements[2]
+            frame[x][y] = c
+            server.send_message_to_all(message)
 
 PORT=9001
 server = WebsocketServer(PORT, host='0.0.0.0')
