@@ -92,6 +92,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
         display.println("WS OK!");
         delay(500);
         clearDisplay();
+        webSocket.sendTXT("FRAME");
       }
       break;
     case WStype_TEXT:
