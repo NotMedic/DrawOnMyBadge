@@ -9,6 +9,15 @@
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+        <style type="text/css">
+            .btn-xl {
+                padding: 10px 20px 5px 20px;
+                font-size: 20px;
+                border-radius: 10px;
+                width:25%;
+            }
+        </style>
+
         <script type="text/javascript">
         // Set-up the canvas and add our event handlers after the page has loaded
         $(document).ready(function() {
@@ -106,8 +115,8 @@
         </script>
     </head>
     <body>
-        <button id="clear-button" class="btn btn-light btn-lg">Clear Badge</button>
-        <button id="update-button" class="btn btn-light btn-lg">Update Frame</button>
+        <button id="clear-button" class="btn btn-light btn-xl">Clear Badge</button>
+        <button id="update-button" class="btn btn-light btn-xl">Update Frame</button>
 	    <input class="color no-alpha" value="rgb(0, 255, 0)" readonly style="background-color: rgb(0, 255, 0); color: rgb(221, 221, 221);">
             <a href="https://github.com/NotMedic/DrawOnMyBadge/">Source and Info</a></p>
 	    <p><canvas id="sketchpad" height="320" width="640" style="background-color: rgba(0, 0, 0, 255);"></canvas>
