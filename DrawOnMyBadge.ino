@@ -1,11 +1,9 @@
 /*******************************************************************
-    Basic Websocket Example
+DrawOnMyBadge.
 
-    Written by Brian Lough
-    https://www.youtube.com/channel/UCezJOfu7OtqGzd5xrP3q6WA
-
-    June 5th, 2018 - Added !rect, !line & !circle - Seon Rozenblum (Unexpected maker)
- *******************************************************************/
+Original idea Brian Lough
+Adapted for websocket client, json, and updates my Tim McGuffin
+*******************************************************************/
 
 #include "secret.h"
 
