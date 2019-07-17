@@ -49,34 +49,18 @@
             exampleSocket.onmessage = function(e) {
                 console.log(e.data);
 
-                let [CMD, MSG] = e.data.split('|');
+                var msg = JSON.parse(e.data);
 
-                switch (CMD) {
+                switch (msg.CMD) {
                     case 'CLEAR':
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
                         break;
 
-                    case 'SINGLE':
-                        var pieces = MSG.split(',');
-                        var inXCoord = pieces[0].substring(2, pieces[0].length);
-                        var inYCoord = pieces[1];
-                        var inColor = pieces[2].substring(2, pieces[2].length);
-
-                        var rgb = rgb2to3(inColor);
-
-                        ctx.fillStyle = `rgb(${rgb.r},${rgb.g},${rgb.b})`;
-
-                        ctx.fillRect(inXCoord,inYCoord,1,1);
-                        break;
-
-                    case 'MULTI':
-                        $.each(MSG.split(';'), function(index, value) {
-                            // might have to pass ctx into this function with
-                            // index and value...
-                            var pieces = value.split(',');
-                            var inXCoord = pieces[0].substring(2, pieces[0].length);
+                    case 'DRAW':
+                        $.each(msg.DATA, function(index, pieces) {
+                            var inXCoord = pieces[0];
                             var inYCoord = pieces[1];
-                            var inColor = pieces[2].substring(2, pieces[2].length);
+                            var inColor = pieces[2];
 
                             var rgb = rgb2to3(inColor);
 
@@ -87,7 +71,7 @@
                         break;
 
                     default:
-                        console.log('CMD: ' + CMD + ', MSG: ' + MSG);
+                        console.log("It's Tim's fault");
                 }
             }
 
