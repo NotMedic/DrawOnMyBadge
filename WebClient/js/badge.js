@@ -54,8 +54,17 @@ function drawDot(ctx,x,y,size) {
 
 // Clear the canvas context using the canvas width and height
 function clearCanvas(canvas,ctx) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    message = 'CLEAR';
+//    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    var jsMessage = {
+	CMD: "CLEAR"
+    };
+   var message = JSON.stringify(jsMessage);
+   
+   console.log(message);
+
+	
+   // message = 'CLEAR';
     exampleSocket.send(message);
 }
 
