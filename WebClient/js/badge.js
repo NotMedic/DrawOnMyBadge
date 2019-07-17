@@ -11,6 +11,8 @@ var scale=10;
 
 var exampleSocket;
 
+var lastmessage = "";
+
 // Draws a dot at a specific position on the supplied canvas name
 // Parameters are: A canvas context, the x position, the y position, the size of the dot
 function drawDot(ctx,x,y,size) {
@@ -47,9 +49,13 @@ function drawDot(ctx,x,y,size) {
 
     var message = JSON.stringify(jsMessage);
 
-    console.log(message);
+    if (message != lastmessage) {
+      console.log(message)
+      lastmessage = message;
+      exampleSocket.send(message);
+    }
 
-    exampleSocket.send(message);
+
 }
 
 // Clear the canvas context using the canvas width and height
@@ -69,8 +75,19 @@ function clearCanvas(canvas,ctx) {
 }
 
 function getFrame(){
-    message = "FRAME";
-    exampleSocket.send(message);
+     var jsMessage = {
+	 CMD: "FRAME"
+     };
+     var message = JSON.stringify(jsMessage);
+     console.log(message);
+
+
+	   // message = 'CLEAR';
+	//     exampleSocket.send(message);
+	//
+	
+	//    message = "FRAME";
+      exampleSocket.send(message);
 }
 
 // Keep track of the mouse button being pressed and draw a dot at current location
