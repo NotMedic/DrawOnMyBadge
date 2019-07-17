@@ -38,11 +38,12 @@ function drawDot(ctx,x,y,size) {
     // ctx.fill();
     ////ctx.fillRect(x,y,1,1);
 
+    var jsMessage = {
+        CMD: "DRAW",
+        DATA: [x, y, `0x${convertedColor}`]
+    };
 
-    var message = '0:';
-    message += x + ',';
-    message += y + ',';
-    message += '0x' + convertedColor;
+    var message = JSON.stringify(jsMessage);
 
     console.log(message);
 
