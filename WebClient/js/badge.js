@@ -184,9 +184,8 @@ function sendWebsocketMessage(element, colourVal) {
     console.log('yCord: ' + yCord);
     var convertedColour = convertColourToRGB565(colourVal);
     console.log('convertedColour: ' + convertedColour);
-    var message = '0:'
-    message += xCord  + ',';
-    message += yCord  + ',';
-    message += '0x' + convertedColour;
+
+    var jsMessage = [xCord, yCord, `0x${convertedColour}`];
+    var message = JSON.stringify(jsMessage);
     exampleSocket.send(message);
 }
