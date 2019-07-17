@@ -40,7 +40,9 @@ function drawDot(ctx,x,y,size) {
 
     var jsMessage = {
         CMD: "DRAW",
-        DATA: [x, y, `0x${convertedColor}`]
+        DATA: [
+		[x, y, `0x${convertedColor}`]
+	]
     };
 
     var message = JSON.stringify(jsMessage);
