@@ -84,18 +84,22 @@
                 clearCanvas(canvas, ctx);
             });
             $("#update-button").click(getFrame);
-
-            var blockSize = ($(window).width() - 64) / 64;
+			
+			var blockSize = ($(window).width() - 64) / 64;
             var canvasHeight = blockSize * 32;
             var viewportwidth = $(window).width() + 64;
 
-            scale = blockSize;
+
+            function setupCanvas() {
+                scale = blockSize;
 
             viewport = document.querySelector("meta[name=viewport]");
             viewport.setAttribute('content', 'width=' + viewportwidth + ', user-scalable=0');
 
             $("#sketchpad").css('width', $(window).width() - 64);
             $("#sketchpad").css('height', canvasHeight);
+
+            }
 			
 			setupCanvas();
         });
