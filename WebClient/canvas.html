@@ -40,6 +40,7 @@
                 // React to touch events on the canvas
                 canvas.addEventListener('touchstart', sketchpad_touchStart, false);
                 canvas.addEventListener('touchmove', sketchpad_touchMove, false);
+				window.addEventListener('orientationchange', setupCanvas, false);
             }
 
             exampleSocket = new WebSocket("ws://52.43.252.153:9001/");
@@ -86,23 +87,25 @@
 
             var blockSize = ($(window).width() - 64) / 64;
             var canvasHeight = blockSize * 32;
-            var viewportwidth = $(window).width() + 64
+            var viewportwidth = $(window).width() + 64;
 
-	    scale = blockSize;
+            scale = blockSize;
 
-	    viewport = document.querySelector("meta[name=viewport]");
+            viewport = document.querySelector("meta[name=viewport]");
             viewport.setAttribute('content', 'width=' + viewportwidth + ', user-scalable=0');
 
             $("#sketchpad").css('width', $(window).width() - 64);
             $("#sketchpad").css('height', canvasHeight);
+			
+			setupCanvas();
         });
         </script>
     </head>
     <body>
         <button id="clear-button" class="btn btn-light btn-xl">Clear Badge</button>
-	<!--        <button id="update-button" class="btn btn-light btn-xl">Update Frame</button> -->
-	    <input class="color no-alpha" value="rgb(0, 255, 0)" readonly style="background-color: rgb(0, 255, 0); color: rgb(221, 221, 221);">
+        <!--        <button id="update-button" class="btn btn-light btn-xl">Update Frame</button> -->
+            <input class="color no-alpha" value="rgb(0, 255, 0)" readonly style="background-color: rgb(0, 255, 0); color: rgb(221, 221, 221);">
             <a href="https://github.com/NotMedic/DrawOnMyBadge/">Source and Info</a></p>
-	    <p><canvas id="sketchpad" height="320" width="640" style="background-color: rgba(0, 0, 0, 255);"></canvas>
+            <p><canvas id="sketchpad" height="320" width="640" style="background-color: rgba(0, 0, 0, 255);"></canvas>
     </body>
 </html>
