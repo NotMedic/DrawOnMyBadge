@@ -21,6 +21,16 @@ The HTML Client:
   3. Sends a FRAME command, recieves the response, and draws the current state of the canvas
   4. Listens for Mouse and Touch events to send to the server
 
+Demo Video:
+https://www.youtube.com/watch?v=_mOYt15QKRg&feature=youtu.be
+
+# Hardware:
+1. [P3 64x32 LED Matrix](https://www.amazon.com/panels-digital-module-display-P3-19296mm/dp/B079JSKF21/)
+2. [Wemos (LoLin) D1 Mini](https://www.amazon.com/IZOKEE-NodeMcu-Internet-Development-Compatible/dp/B076F53B6S/)
+3. I originally had this breadboard wired, but Brian Louth sells a nice [breakout board](https://www.tindie.com/products/brianlough/d1-mini-matrix-shield/) to clean up the wiring.
+
+Brian also has a solid wiring instructions here:
+https://www.instructables.com/id/RGB-LED-Matrix-With-an-ESP8266/
 
 # Inspiration and Modifications
 
