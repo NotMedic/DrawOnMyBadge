@@ -217,7 +217,7 @@ void setup() {
   delayRunning = true;
 
   //webSocket.begin();
-  webSocket.begin("52.43.252.153", 9001, "/");
+  webSocket.begin("x.x.x.x", 9001, "/");
   webSocket.onEvent(webSocketEvent);
 }
 
