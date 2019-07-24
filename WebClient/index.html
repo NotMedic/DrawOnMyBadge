@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jqColorPicker.min.js"></script>
+        <script type="text/javascript" src="js/badge.js"></script>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <style type="text/css">
+            .btn-xl {
+                padding: 10px 20px 5px 20px;
+                font-size: 20px;
+                border-radius: 10px;
+                width:25%;
+            }
+        </style>
+
+        <script type="text/javascript">
+        // Set-up the canvas and add our event handlers after the page has loaded
+        $(document).ready(function() {
+            // Get the specific canvas element from the HTML document
+            canvas = document.getElementById('sketchpad');
+
+            // If the browser supports the canvas tag, get the 2d drawing context for this canvas
+            if (canvas.getContext) {
+                ctx = canvas.getContext('2d');
+            }
+            ctx.scale(scale,scale)
+
+            // Check that we have a valid context to draw on/with before adding event handlers
+            if (ctx) {
+                // React to mouse events on the canvas, and mouseup on the entire document
+                canvas.addEventListener('mousedown', sketchpad_mouseDown, false);
+                canvas.addEventListener('mousemove', sketchpad_mouseMove, false);
+                window.addEventListener('mouseup', sketchpad_mouseUp, false);
+
+                // React to touch events on the canvas
+                canvas.addEventListener('touchstart', sketchpad_touchStart, false);
+                canvas.addEventListener('touchmove', sketchpad_touchMove, false);
+				window.addEventListener('orientationchange', setupCanvas, false);
+            }
+
+            exampleSocket = new WebSocket("ws://52.43.252.153:9001/");
+
+            exampleSocket.onopen  = function(event) { getFrame(); };
+
+
+	   // exampleSocket.onclose=function(event){
+	   // }
+		
+	    exampleSocket.onmessage = function(e) {
+                console.log(e.data);
+
+                var msg = JSON.parse(e.data);
+
+                switch (msg.CMD) {
+                    case 'CLEAR':
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        break;
+
+                    case 'DRAW':
+                        $.each(msg.DATA, function(index, pieces) {
+                            var inXCoord = pieces[0];
+                            var inYCoord = pieces[1];
+                            var inColor = pieces[2];
+
+                            var rgb = rgb2to3(inColor);
+
+                            ctx.fillStyle = `rgb(${rgb.r},${rgb.g},${rgb.b})`;
+
+                            ctx.fillRect(inXCoord,inYCoord,1,1);
+                        });
+                        break;
+
+                    default:
+                        console.log("It's Tim's fault");
+                }
+            }
+
+            $(".color").colorPicker({
+                forceAlpha: false
+            });
+
+            $("#clear-button").click(function(canvas, ctx) {
+                clearCanvas(canvas, ctx);
+            });
+            $("#update-button").click(getFrame);
+			
+			var blockSize = ($(window).width() - 64) / 64;
+            var canvasHeight = blockSize * 32;
+            var viewportwidth = $(window).width() + 64;
+
+
+            function setupCanvas() {
+                scale = blockSize;
+
+            viewport = document.querySelector("meta[name=viewport]");
+            viewport.setAttribute('content', 'width=' + viewportwidth + ', user-scalable=0');
+
+            $("#sketchpad").css('width', $(window).width() - 64);
+            $("#sketchpad").css('height', canvasHeight);
+
+            }
+			
+			setupCanvas();
+        });
+        </script>
+    </head>
+    <body>
+        <button id="clear-button" class="btn btn-light btn-xl">Clear Badge</button>
+        <!--        <button id="update-button" class="btn btn-light btn-xl">Update Frame</button> -->
+            <input class="color no-alpha" value="rgb(0, 255, 0)" readonly style="background-color: rgb(0, 255, 0); color: rgb(221, 221, 221);">
+            <a href="https://github.com/NotMedic/DrawOnMyBadge/">Source and Info</a></p>
+            <p><canvas id="sketchpad" height="320" width="640" style="background-color: rgba(0, 0, 0, 255);"></canvas>
+    </body>
+</html>
