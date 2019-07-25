@@ -1,31 +1,15 @@
 /*******************************************************************
-DrawOnMyBadge.
-
-Original idea Brian Lough
-Adapted for websocket client, json, and updates my Tim McGuffin
+  DrawOnMyBadge.
+  Original idea Brian Lough
+  Adapted for websocket client, json, and updates my Tim McGuffin
 *******************************************************************/
 
-#include "secret.h"
-
 #include <Arduino.h>
-
 #include <ESP8266WiFi.h>
-//#include <WebSocketsServer.h>
 #include <WebSocketsClient.h>
 #include <Hash.h>
-
 #include <ArduinoJson.h>
-
-// ----------------------------
-// Standard Libraries - Already Installed if you have ESP8266 set up
-// ----------------------------
-
 #include <Ticker.h>
-
-// ----------------------------
-// Additional Libraries - each one of these will need to be installed.
-// ----------------------------
-
 
 #include <PxMatrix.h>
 // The library for controlling the LED Matrix
@@ -45,17 +29,14 @@ Ticker display_ticker;
 #define P_D 12
 #define P_E 0
 
-// PxMATRIX display(32,16,P_LAT, P_OE,P_A,P_B,P_C);
-// PxMATRIX display(64,32,P_LAT, P_OE,P_A,P_B,P_C,P_D);
 PxMATRIX display(64, 32, P_LAT, P_OE, P_A, P_B, P_C, P_D, P_E);
 
-//DynamicJsonBuffer jsonBuffer(4096);
-
 //------- Replace the following! ------
+#define WIFI_NAME "APName"
+#define WIFI_PASS "APPassword"
+
 char ssid[] = WIFI_NAME;       // your network SSID (name)
 char password[] = WIFI_PASS;  // your network key
-
-//WebSocketsServer webSocket = WebSocketsServer(81);
 
 unsigned long delayStart = 0;
 bool delayRunning = false;
@@ -68,7 +49,6 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
   uint16_t colour;
   String inPayload;
   String colourString;
-  //int command;
 
   switch (type) {
     case WStype_DISCONNECTED:
@@ -101,23 +81,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 
         String commandtemp = root["CMD"];
 
-        //      Serial.println("Command: \"" + commandtemp + "\"");
-
-        if (commandtemp == "SINGLE") {
-
-          x = int(root["DATA"][0]);
-          y = int(root["DATA"][1]);
-          String c = root["DATA"][2];
-
-          //       Serial.println("x: " + String(x));
-          //       Serial.println("y: " + String(y));
-          //       Serial.println("c: " + c);
-
-          colour = strtol(c.c_str(), NULL, 0);
-          //        Serial.println(colour);
-          display.drawPixel(x , y, colour);
-
-        } else if (commandtemp == "CLEAR") {
+       if (commandtemp == "CLEAR") {
 
           clearDisplay();
 
@@ -195,13 +159,27 @@ void setup() {
   Serial.println(ssid);
 
   WiFi.begin(ssid, password);
+
+  int wificount = 0;
   while (WiFi.status() != WL_CONNECTED) {
+    wificount = wificount + 1;
     Serial.print(".");
     clearDisplay();
     display.setCursor(1, 1);
     display.println("No WiFi");
 
     delay(500);
+
+    if (wificount > 20) {
+      WiFi.disconnect();
+      //WiFi of Last Resort.
+      display.println("Fallback");
+      //Should probably consider WifiManager, but this is good for DEFCON Wireless.
+      //------- Replace the following! ------
+      WiFi.begin("BackupAP", "BackupPassword");
+      wificount = 0;
+    }
+
   }
   Serial.println("");
   Serial.println("WiFi connected");
